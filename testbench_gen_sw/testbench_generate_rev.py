@@ -36,6 +36,8 @@
                 了程序中的其他接口
     2019/1/31   1.发现了不能正确识别 output reg[DW*WL-1:0]   m_axis_tdata 类型
                 信号，因为reg与后端[符号并未添加多余空格，问题待解决
+    
+    2019/08/08  1.修正不能正确识别如parameter P = {16{1'b1}} ; 等形式参数的错误
     '''
     
 ''' This Program is Used to Create TestBench For a Verilog File '''
@@ -190,7 +192,7 @@ def testbench_analyze(dut_fid):
     print_table(['Name'],module_name)
     
     # 提取参数列表中的参数 提取逻辑可以表示如下 位于#右侧的第一个括号内以,分割
-    param_info=format_get('((?:parameter)|(?:localparam))\s*(\w*)\s*=\s*(\w*)(?:\n|.)*?[;,)]',file)
+    param_info=format_get('((?:parameter)|(?:localparam))\s*(\w*)\s*=\s*(.*?)\s*[;,)]',file)
     print('Parameter Information Table  :')
     print_table(['Type','Name','Value'],param_info)
     param_dict=list2dict(['Type','Name','Value'],param_info)
